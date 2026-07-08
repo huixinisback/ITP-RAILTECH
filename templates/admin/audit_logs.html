@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Audit Logs — Admin{% endblock %}
+
+{% block content %}
+<main class="page">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Administration</p>
+            <h1>Audit Logs</h1>
+            <p class="subtitle">Complete system activity log</p>
+        </div>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline">← Back to Admin</a>
+    </header>
+
+    <section class="toolbar">
+        <form class="search-sort-form" method="GET">
+            <input type="text" name="search" value="{{ search }}" placeholder="Search logs..." class="search-input">
+            <select name="action_type">
+                <option value="">All Actions</option>
+                <option value="User Login" {% if action_filter == 'User Login' %}selected{% endif %}>User Login</option>
+                <option value="User Logout" {% if action_filter == 'User Logout' %}selected{% endif %}>User Logout</option>
+                <option value="Manual Mileage Edit" {% if action_filter == 'Manual Mileage Edit' %}selected{% endif %}>Manual Mileage Edit</option>
+                <option value="Maintenance Completed" {% if action_filter == 'Maintenance Completed' %}selected{% endif %}>Maintenance Completed</option>
+                <option value="Admin Override" {% if action_filter == 'Admin Override' %}selected{% endif %}>Admin Override</option>
+                <option value="OCR Correction" {% if action_filter == 'OCR Correction' %}selected{% endif %}>OCR Correction</option>
+                <option value="Manual Review Confirmation" {% if action_filter == 'Manual Review Confirmation' %}selected{% endif %}>Manual Review</option>
+            </select>
+            <button type="submit" class="btn btn-secondary btn-sm">Filter</button>
+        </form>
+    </section>
+
+    <section class="admin-section">
+        <div class="panel-card">
+            <div class="history-table-wrap">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Log ID</th>
+                            <th>Timestamp</th>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                            <th>Affected</th>
+                            <th>Old Value</th>
+                            <th>New Value</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td><small>{{ log.log_id }}</small></td>
+                            <td>{{ log.timestamp }}</td>
+                            <td>{{ log.user_id }}</td>
+                            <td>{{ log.user_role }}</td>
+                            <td><strong>{{ log.action_type }}</strong></td>
+                            <td>{{ log.affected_id or '-' }}</td>
+                            <td>{{ log.old_value or '-' }}</td>
+                            <td>{{ log.new_value or '-' }}</td>
+                            <td>{{ log.remarks or '-' }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="9" class="empty-state">No audit logs found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

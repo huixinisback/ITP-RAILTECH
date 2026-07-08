@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% from "components/macros.html" import pm_badge, serviceability_badge %}
+{% block title %}Train Management — Admin{% endblock %}
+
+{% block content %}
+<main class="page">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Administration</p>
+            <h1>Train Management</h1>
+            <p class="subtitle">Add, view, and remove train records</p>
+        </div>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline">← Back to Admin</a>
+    </header>
+
+    <section class="admin-section">
+        <div class="panel-card">
+            <h2>Add New Train</h2>
+            <form method="POST" class="train-add-form">
+                <input type="hidden" name="action" value="create">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="train_id">Train ID <span class="required">*</span></label>
+                        <input type="text" id="train_id" name="train_id" required placeholder="e.g. PV107" pattern="[A-Za-z0-9]+">
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model / Type</label>
+                        <input type="text" id="model" name="model" value="2-Car LRV" placeholder="2-Car LRV">
+                    </div>
+                    <div class="form-group">
+                        <label for="current_mileage">Current Mileage (km) <span class="required">*</span></label>
+                        <input type="number" id="current_mileage" name="current_mileage" required min="0" placeholder="e.g. 15000">
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceability_status">Serviceability</label>
+                        <select id="serviceability_status" name="serviceability_status">
+                            <option value="Serviceable">Serviceable</option>
+                            <option value="Under Maintenance">Under Maintenance</option>
+                            <option value="Unserviceable">Unserviceable</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-wide">
+                        <label for="completed_milestones">Completed PM Milestones</label>
+                        <input type="text" id="completed_milestones" name="completed_milestones" placeholder="e.g. 2000, 13000 (comma-separated, optional)">
+                        <small class="form-hint">Leave blank for a new train with no completed milestones</small>
+                    </div>
+                    <div class="form-group form-wide">
+                        <label for="remarks">Remarks</label>
+                        <textarea id="remarks" name="remarks" rows="2" placeholder="Optional notes about this train"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Train</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="panel-card">
+            <h2>All Trains ({{ trains|length }})</h2>
+            <div class="history-table-wrap">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Train ID</th>
+                            <th>Model</th>
+                            <th>Mileage</th>
+                            <th>PM Status</th>
+                            <th>Serviceability</th>
+                            <th>Last Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in trains %}
+                        <tr>
+                            <td><strong>{{ t.train_id }}</strong></td>
+                            <td>{{ t.model }}</td>
+                            <td>{{ "{:,}".format(t.current_mileage) }} km</td>
+                            <td>{{ pm_badge(t.pm_status, t.color) }}</td>
+                            <td>{{ serviceability_badge(t.serviceability_status) }}</td>
+                            <td>{{ t.last_updated }}</td>
+                            <td>
+                                <form method="POST" style="display:inline" onsubmit="return confirm('Delete train {{ t.train_id }}? This cannot be undone.')">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="train_id" value="{{ t.train_id }}">
+                                    <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="7" class="empty-state">No trains registered yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

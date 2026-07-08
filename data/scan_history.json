@@ -1,0 +1,430 @@
+[
+  {
+    "timestamp": "2026-07-08 16:50:39",
+    "train_id": "LV02",
+    "scanned_mileage": 77,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.10725,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 16:49:20",
+    "train_id": "LV02",
+    "scanned_mileage": 35,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.0135,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 16:46:35",
+    "train_id": "LV02",
+    "scanned_mileage": 7,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.084,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 16:45:46",
+    "train_id": "LV02",
+    "scanned_mileage": 4037,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.0672,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 16:45:10",
+    "train_id": "LV02",
+    "scanned_mileage": 1,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.0705,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 16:45:01",
+    "train_id": "LV02",
+    "scanned_mileage": 4,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.129,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 16:44:56",
+    "train_id": "LV02",
+    "scanned_mileage": 2,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.012,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 16:43:41",
+    "train_id": "LV02",
+    "scanned_mileage": 7,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.056999999999999995,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 16:42:36",
+    "train_id": "LV02",
+    "scanned_mileage": 6584217,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.35,
+    "qr_confidence": 0.98,
+    "result": "Needs Review",
+    "reason": "OCR confidence 35% below threshold"
+  },
+  {
+    "timestamp": "2026-07-08 16:42:32",
+    "train_id": "LV02",
+    "scanned_mileage": 50421,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.35,
+    "qr_confidence": 0.98,
+    "result": "Needs Review",
+    "reason": "OCR confidence 35% below threshold"
+  },
+  {
+    "timestamp": "2026-07-08 16:42:26",
+    "train_id": "LV02",
+    "scanned_mileage": 550457,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.35,
+    "qr_confidence": 0.98,
+    "result": "Needs Review",
+    "reason": "OCR confidence 35% below threshold"
+  },
+  {
+    "timestamp": "2026-07-08 16:42:17",
+    "train_id": "LV02",
+    "scanned_mileage": 558421,
+    "previous_mileage": 5421,
+    "ocr_confidence": 0.35,
+    "qr_confidence": 0.98,
+    "result": "Needs Review",
+    "reason": "OCR confidence 35% below threshold"
+  },
+  {
+    "timestamp": "2026-07-08 16:36:26",
+    "train_id": "LV02",
+    "scanned_mileage": 5421,
+    "previous_mileage": 100,
+    "ocr_confidence": 0.82,
+    "qr_confidence": 0.98,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-07-08 15:06:41",
+    "train_id": "PV104",
+    "scanned_mileage": 54123,
+    "previous_mileage": 54123,
+    "ocr_confidence": 0.94,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 15:06:39",
+    "train_id": "PV104",
+    "scanned_mileage": 594123,
+    "previous_mileage": 54123,
+    "ocr_confidence": 0.73,
+    "qr_confidence": 0.98,
+    "result": "Needs Review",
+    "reason": "OCR confidence 73% below threshold"
+  },
+  {
+    "timestamp": "2026-07-08 15:06:37",
+    "train_id": "PV104",
+    "scanned_mileage": 94123,
+    "previous_mileage": 54123,
+    "ocr_confidence": 0.62,
+    "qr_confidence": 0.98,
+    "result": "Needs Review",
+    "reason": "OCR confidence 62% below threshold"
+  },
+  {
+    "timestamp": "2026-07-08 15:06:35",
+    "train_id": "PV104",
+    "scanned_mileage": 54123,
+    "previous_mileage": 53123,
+    "ocr_confidence": 0.8,
+    "qr_confidence": 0.98,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-07-08 15:05:55",
+    "train_id": "PV104",
+    "scanned_mileage": 53123,
+    "previous_mileage": 53123,
+    "ocr_confidence": 0.95,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 15:05:53",
+    "train_id": "PV104",
+    "scanned_mileage": 5943,
+    "previous_mileage": 53123,
+    "ocr_confidence": 0.37,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 15:05:47",
+    "train_id": "PV104",
+    "scanned_mileage": 53123,
+    "previous_mileage": 40500,
+    "ocr_confidence": 0.95,
+    "qr_confidence": 0.98,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-07-08 14:55:47",
+    "train_id": "PV103",
+    "scanned_mileage": 6,
+    "previous_mileage": 44238,
+    "ocr_confidence": 0.73,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 14:47:13",
+    "train_id": "PV103",
+    "scanned_mileage": 55,
+    "previous_mileage": 44238,
+    "ocr_confidence": 0.76,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 14:42:12",
+    "train_id": "PV103",
+    "scanned_mileage": 4,
+    "previous_mileage": 44238,
+    "ocr_confidence": 0.73,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 14:34:08",
+    "train_id": "PV103",
+    "scanned_mileage": 44236,
+    "previous_mileage": 44238,
+    "ocr_confidence": 0.85,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-07-08 14:34:06",
+    "train_id": "PV103",
+    "scanned_mileage": 44238,
+    "previous_mileage": 15000,
+    "ocr_confidence": 0.85,
+    "qr_confidence": 0.98,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-07-08 14:30:37",
+    "train_id": "PV101",
+    "scanned_mileage": 39600,
+    "previous_mileage": 39500,
+    "ocr_confidence": 0.92,
+    "qr_confidence": 0.98,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-07-08 13:20:04",
+    "train_id": "PV102",
+    "scanned_mileage": 2931238,
+    "previous_mileage": 2931238,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-12 09:59:13",
+    "train_id": "PV102",
+    "scanned_mileage": 2931238,
+    "previous_mileage": 2131238,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-05-12 09:58:40",
+    "train_id": "PV101",
+    "scanned_mileage": 2903798,
+    "previous_mileage": 2593798,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-05-12 09:58:38",
+    "train_id": "PV101",
+    "scanned_mileage": 290272,
+    "previous_mileage": 2593798,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-12 09:56:55",
+    "train_id": "PV101",
+    "scanned_mileage": 25,
+    "previous_mileage": 2593798,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-12 09:56:51",
+    "train_id": "PV101",
+    "scanned_mileage": 2593798,
+    "previous_mileage": 2493798,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-05-12 09:56:43",
+    "train_id": "PV101",
+    "scanned_mileage": 4,
+    "previous_mileage": 2493798,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-12 09:56:41",
+    "train_id": "PV101",
+    "scanned_mileage": 2393798,
+    "previous_mileage": 2493798,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-12 09:56:37",
+    "train_id": "PV101",
+    "scanned_mileage": 2393798,
+    "previous_mileage": 2493798,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-12 09:56:35",
+    "train_id": "PV101",
+    "scanned_mileage": 2393798,
+    "previous_mileage": 2493798,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-12 09:56:12",
+    "train_id": "PV101",
+    "scanned_mileage": 2493792,
+    "previous_mileage": 2493798,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-12 09:56:08",
+    "train_id": "PV101",
+    "scanned_mileage": 2493798,
+    "previous_mileage": 2239898,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-05-08 17:36:56",
+    "train_id": "PV104",
+    "scanned_mileage": 23123,
+    "previous_mileage": 2059800,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-08 16:30:49",
+    "train_id": "PV102",
+    "scanned_mileage": 2131238,
+    "previous_mileage": 1987450,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-05-08 16:30:27",
+    "train_id": "PV101",
+    "scanned_mileage": 2239898,
+    "previous_mileage": 2239998,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-08 16:30:25",
+    "train_id": "PV101",
+    "scanned_mileage": 2239898,
+    "previous_mileage": 2239998,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-08 16:30:23",
+    "train_id": "PV101",
+    "scanned_mileage": 2239898,
+    "previous_mileage": 2239998,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-08 16:30:21",
+    "train_id": "PV101",
+    "scanned_mileage": 2239898,
+    "previous_mileage": 2239998,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-08 16:30:18",
+    "train_id": "PV101",
+    "scanned_mileage": 2239898,
+    "previous_mileage": 2239998,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-08 16:30:00",
+    "train_id": "PV101",
+    "scanned_mileage": 223999,
+    "previous_mileage": 2239998,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
+    "timestamp": "2026-05-08 16:29:56",
+    "train_id": "PV101",
+    "scanned_mileage": 2239998,
+    "previous_mileage": 2231238,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  }
+]

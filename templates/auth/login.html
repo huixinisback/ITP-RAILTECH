@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Login — LRT Maintenance{% endblock %}
+
+{% block content %}
+<main class="auth-page">
+    <div class="auth-card">
+        <div class="auth-header">
+            <p class="eyebrow">Singapore RailTech</p>
+            <h1>Sign In</h1>
+            <p class="subtitle">LRT Mileage Inspection Dashboard</p>
+        </div>
+
+        <form method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="user_id">User ID or Email</label>
+                <input type="text" id="user_id" name="user_id" required
+                       value="{{ remembered_user or '' }}" placeholder="Enter user ID or email" autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-field">
+                    <input type="password" id="password" name="password" required placeholder="Enter password" autocomplete="current-password">
+                    <button type="button" class="toggle-password" onclick="togglePassword('password')">Show</button>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="remember" {% if remembered_user %}checked{% endif %}>
+                    Remember me
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+        </form>
+
+        <div class="auth-links">
+            <a href="{{ url_for('forgot_password') }}">Forgot password?</a>
+            <a href="{{ url_for('register') }}">Create an account</a>
+        </div>
+
+        <div class="demo-credentials">
+            <p class="demo-title">Demo Accounts</p>
+            <p><strong>admin</strong> / Admin123! (Administrator)</p>
+            <p><strong>maint01</strong> / Maint123! (Maintenance)</p>
+            <p><strong>ops01</strong> / Ops12345! (Operator)</p>
+        </div>
+    </div>
+</main>
+{% endblock %}

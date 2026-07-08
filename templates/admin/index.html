@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Admin — LRT Maintenance{% endblock %}
+
+{% block content %}
+<main class="page">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Administration</p>
+            <h1>Admin Dashboard</h1>
+            <p class="subtitle">User management, audit logs, and system oversight</p>
+        </div>
+    </header>
+
+    <div class="admin-nav">
+        <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">User Management</a>
+        <a href="{{ url_for('admin_trains') }}" class="btn btn-secondary">Train Management</a>
+        <a href="{{ url_for('admin_audit_logs') }}" class="btn btn-secondary">Audit Logs</a>
+        <a href="{{ url_for('admin_review_queue') }}" class="btn btn-secondary">Review Queue ({{ review_queue|length }})</a>
+        <a href="{{ url_for('maintenance_history') }}" class="btn btn-secondary">Maintenance History</a>
+        <a href="{{ url_for('scan_page') }}" class="btn btn-primary">Camera Scan</a>
+    </div>
+
+    <section class="admin-section">
+        <div class="panel-card">
+            <h2>Manual Review Queue</h2>
+            {% if review_queue %}
+            <div class="history-table-wrap">
+                <table class="history-table">
+                    <thead>
+                        <tr><th>Train</th><th>Mileage</th><th>OCR</th><th>QR</th><th>Validity</th><th>Remarks</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for t in review_queue %}
+                        <tr>
+                            <td><strong>{{ t.train_id }}</strong></td>
+                            <td>{{ "{:,}".format(t.current_mileage) }} km</td>
+                            <td>{{ (t.ocr_confidence * 100)|int }}%</td>
+                            <td>{{ (t.qr_confidence * 100)|int }}%</td>
+                            <td>{{ t.scan_validity }}</td>
+                            <td>{{ t.remarks or '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty-state">No trains awaiting manual review.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="panel-card">
+            <h2>Recent Audit Logs</h2>
+            {% if audit_logs %}
+            <div class="history-table-wrap">
+                <table class="history-table">
+                    <thead>
+                        <tr><th>Time</th><th>User</th><th>Action</th><th>Affected</th><th>Details</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for log in audit_logs %}
+                        <tr>
+                            <td>{{ log.timestamp }}</td>
+                            <td>{{ log.user_id }} <small>({{ log.user_role }})</small></td>
+                            <td>{{ log.action_type }}</td>
+                            <td>{{ log.affected_id or '-' }}</td>
+                            <td>
+                                {% if log.old_value and log.new_value %}{{ log.old_value }} → {{ log.new_value }}{% endif %}
+                                {% if log.remarks %}<br><small>{{ log.remarks }}</small>{% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{{ url_for('admin_audit_logs') }}" class="btn btn-outline btn-sm" style="margin-top:12px">View All Logs</a>
+            {% else %}
+            <p class="empty-state">No audit logs yet.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="panel-card">
+            <h2>Maintenance Completion Log</h2>
+            {% if maintenance %}
+            <div class="history-table-wrap">
+                <table class="history-table">
+                    <thead>
+                        <tr><th>Time</th><th>Train</th><th>Milestone</th><th>Completed By</th><th>Remarks</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for r in maintenance %}
+                        <tr>
+                            <td>{{ r.completed_at }}</td>
+                            <td>{{ r.train_id }}</td>
+                            <td>{{ "{:,}".format(r.pm_milestone) }} km</td>
+                            <td>{{ r.completed_by }}</td>
+                            <td>{{ r.remarks or '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty-state">No maintenance records yet.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="panel-card">
+            <h2>PM Override Records</h2>
+            {% if overrides %}
+            <div class="history-table-wrap">
+                <table class="history-table">
+                    <thead>
+                        <tr><th>Time</th><th>Train</th><th>Field</th><th>Old → New</th><th>By</th><th>Reason</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for o in overrides %}
+                        <tr>
+                            <td>{{ o.changed_at }}</td>
+                            <td>{{ o.train_id }}</td>
+                            <td>{{ o.field_changed }}</td>
+                            <td>{{ o.old_value }} → {{ o.new_value }}</td>
+                            <td>{{ o.changed_by }}</td>
+                            <td>{{ o.reason or '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty-state">No override records yet.</p>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% macro pm_badge(status, color) %}
+<span class="status-badge {{ color }}">
+    <span class="dot"></span>
+    {{ status }}
+</span>
+{% endmacro %}
+
+{% macro serviceability_badge(status) %}
+<span class="status-badge serviceability {% if status == 'Serviceable' %}green{% elif status == 'Under Maintenance' %}yellow{% else %}red{% endif %}">
+    <span class="dot"></span>
+    {{ status }}
+</span>
+{% endmacro %}
+
+{% macro scan_validity_badge(validity) %}
+<span class="status-badge scan-validity {% if validity == 'Valid' %}green{% elif validity == 'Low Confidence' %}yellow{% else %}red{% endif %}">
+    {{ validity }}
+</span>
+{% endmacro %}
+
+{% macro confidence_indicator(label, value) %}
+<span class="confidence-item {% if value >= 0.9 %}high{% elif value >= 0.75 %}medium{% else %}low{% endif %}">
+    {{ label }}: {{ (value * 100)|int }}%
+</span>
+{% endmacro %}
+
+{% macro milestone_chips(checklist) %}
+<div class="milestone-row">
+    {% for item in checklist %}
+    <span class="milestone-chip {{ item.state }}">
+        {% if item.state == 'completed' %}✓{% elif item.state == 'current' %}●{% else %}○{% endif %}
+        {{ item.label }}
+    </span>
+    {% endfor %}
+</div>
+{% endmacro %}

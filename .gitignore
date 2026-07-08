@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
+
+# Environment / secrets
+.env
+.env.*
+
+# Local debug output
+test_*.png
+
+# Cursor project metadata
+.cursor/

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Camera Scan — LRT Maintenance{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<main class="page">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Live Scanning</p>
+            <h1>Camera Scan</h1>
+            <p class="subtitle">Scan QR code and mileage using your webcam or phone camera</p>
+        </div>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline">← Dashboard</a>
+    </header>
+
+    <div class="scan-layout">
+        <section class="scan-camera-panel panel-card">
+            <div class="panel-head">
+                <h2>Live Camera</h2>
+                <span class="live-dot" id="cameraDot"></span>
+            </div>
+
+            <div class="camera-container">
+                <video id="cameraVideo" autoplay playsinline muted></video>
+                <canvas id="cameraCanvas" hidden></canvas>
+                <div class="camera-overlay" id="cameraOverlay">
+                    <p>Point camera at QR code and mileage display</p>
+                </div>
+            </div>
+
+            <div class="scan-controls">
+                <button class="btn btn-primary" id="startCameraBtn" onclick="startCamera()">Start Camera</button>
+                <button class="btn btn-outline" id="stopCameraBtn" onclick="stopCamera()" hidden>Stop Camera</button>
+                <button class="btn btn-secondary" id="switchCameraBtn" onclick="switchCamera()" hidden>Switch Camera</button>
+                <select id="cameraSelect" class="camera-select" hidden></select>
+            </div>
+
+            <p class="scan-hint">Works on desktop webcam and mobile phone camera. Hold steady — auto-scans every 2 seconds.</p>
+        </section>
+
+        <section class="scan-results-panel">
+            <div class="panel-card">
+                <h2>Scan Results</h2>
+                <div class="scan-result-grid">
+                    <div class="scan-result-item">
+                        <span class="meta-label">QR Train ID</span>
+                        <strong id="scanTrainId" class="scan-value">—</strong>
+                    </div>
+                    <div class="scan-result-item">
+                        <span class="meta-label">OCR Mileage</span>
+                        <strong id="scanMileage" class="scan-value">—</strong>
+                    </div>
+                    <div class="scan-result-item">
+                        <span class="meta-label">QR Confidence</span>
+                        <strong id="scanQrConf">—</strong>
+                    </div>
+                    <div class="scan-result-item">
+                        <span class="meta-label">OCR Confidence</span>
+                        <strong id="scanOcrConf">—</strong>
+                    </div>
+                </div>
+                <div class="scan-status" id="scanStatus">
+                    <span class="meta-label">Status</span>
+                    <p id="scanStatusText">Camera not started</p>
+                </div>
+            </div>
+
+            <div class="panel-card">
+                <h2>Manual Entry</h2>
+                <p class="form-hint" style="margin-bottom:12px">Use this if the camera scan fails or for quick corrections.</p>
+                <form id="manualScanForm" onsubmit="submitManualScan(event)">
+                    <div class="form-group">
+                        <label for="manualTrainId">Train ID</label>
+                        <input type="text" id="manualTrainId" list="trainIdList" required placeholder="e.g. PV101">
+                        <datalist id="trainIdList">
+                            {% for id in train_ids %}
+                            <option value="{{ id }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="manualMileage">Mileage (km)</label>
+                        <input type="number" id="manualMileage" required min="0" placeholder="e.g. 39500">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Submit Reading</button>
+                </form>
+            </div>
+
+            <div class="panel-card">
+                <h2>Last Server Response</h2>
+                <pre class="scan-log" id="scanLog">Waiting for scan...</pre>
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const VALID_TRAINS = new Set({{ train_ids | tojson }});
+</script>
+<script src="{{ url_for('static', filename='scanner.js') }}"></script>
+{% endblock %}

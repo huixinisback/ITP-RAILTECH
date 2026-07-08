@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}User Management — Admin{% endblock %}
+
+{% block content %}
+<main class="page">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Administration</p>
+            <h1>User Management</h1>
+            <p class="subtitle">Manage user accounts and roles</p>
+        </div>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline">← Back to Admin</a>
+    </header>
+
+    <section class="admin-section">
+        <div class="panel-card">
+            <h2>Add New User</h2>
+            <form method="POST" class="inline-form">
+                <input type="hidden" name="action" value="create">
+                <input type="text" name="full_name" placeholder="Full Name" required>
+                <input type="text" name="user_id" placeholder="User ID" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <select name="role">
+                    <option value="operator">Operator</option>
+                    <option value="maintenance">Maintenance</option>
+                    <option value="admin">Admin</option>
+                    <option value="viewer">Viewer</option>
+                </select>
+                <button type="submit" class="btn btn-primary btn-sm">Add User</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="panel-card">
+            <h2>All Users ({{ users|length }})</h2>
+            <div class="history-table-wrap">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td><strong>{{ u.user_id }}</strong></td>
+                            <td>{{ u.full_name }}</td>
+                            <td>{{ u.email }}</td>
+                            <td>{{ u.role|capitalize }}</td>
+                            <td>
+                                <span class="status-badge {% if u.status == 'active' %}green{% else %}red{% endif %}">
+                                    {{ u.status|capitalize }}
+                                </span>
+                            </td>
+                            <td>{{ u.last_login or 'Never' }}</td>
+                            <td class="action-cell">
+                                <button class="btn btn-outline btn-xs" onclick="editUser('{{ u.user_id }}', '{{ u.full_name }}', '{{ u.email }}', '{{ u.role }}', '{{ u.status }}')">Edit</button>
+                                <button class="btn btn-outline btn-xs" onclick="resetPwd('{{ u.user_id }}')">Reset Pwd</button>
+                                {% if u.user_id != 'admin' %}
+                                <form method="POST" style="display:inline" onsubmit="return confirm('Delete user {{ u.user_id }}?')">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="user_id" value="{{ u.user_id }}">
+                                    <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div class="modal-overlay" id="editUserModal" hidden>
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Edit User</h2>
+            <button class="modal-close" onclick="closeModal('editUserModal')">&times;</button>
+        </div>
+        <form method="POST">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="user_id" id="editUserId">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="full_name" id="editUserName" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" id="editUserEmail" required>
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <select name="role" id="editUserRole">
+                    <option value="operator">Operator</option>
+                    <option value="maintenance">Maintenance</option>
+                    <option value="admin">Admin</option>
+                    <option value="viewer">Viewer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" id="editUserStatus">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeModal('editUserModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="resetPwdModal" hidden>
+    <div class="modal modal-sm">
+        <div class="modal-header">
+            <h2>Reset Password</h2>
+            <button class="modal-close" onclick="closeModal('resetPwdModal')">&times;</button>
+        </div>
+        <form method="POST">
+            <input type="hidden" name="action" value="reset_password">
+            <input type="hidden" name="user_id" id="resetUserId">
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" name="new_password" required minlength="8">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeModal('resetPwdModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function editUser(id, name, email, role, status) {
+    document.getElementById('editUserId').value = id;
+    document.getElementById('editUserName').value = name;
+    document.getElementById('editUserEmail').value = email;
+    document.getElementById('editUserRole').value = role;
+    document.getElementById('editUserStatus').value = status;
+    document.getElementById('editUserModal').hidden = false;
+}
+function resetPwd(id) {
+    document.getElementById('resetUserId').value = id;
+    document.getElementById('resetPwdModal').hidden = false;
+}
+</script>
+{% endblock %}

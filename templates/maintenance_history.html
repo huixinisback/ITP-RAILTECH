@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Maintenance History{% endblock %}
+
+{% block content %}
+<main class="page">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Maintenance</p>
+            <h1>Maintenance History</h1>
+            <p class="subtitle">Completed PM milestones and service records</p>
+        </div>
+    </header>
+
+    <section class="toolbar">
+        <form class="search-sort-form" method="GET">
+            <input type="text" name="train_id" value="{{ train_id or '' }}" placeholder="Filter by Train ID..." class="search-input">
+            <button type="submit" class="btn btn-secondary btn-sm">Filter</button>
+            {% if train_id %}
+            <a href="{{ url_for('maintenance_history') }}" class="btn btn-outline btn-sm">Clear</a>
+            {% endif %}
+        </form>
+    </section>
+
+    <section class="admin-section">
+        <div class="panel-card">
+            {% if records %}
+            <div class="history-table-wrap">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Record ID</th>
+                            <th>Completed At</th>
+                            <th>Train</th>
+                            <th>PM Milestone</th>
+                            <th>Mileage at Completion</th>
+                            <th>Completed By</th>
+                            <th>Remarks</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in records %}
+                        <tr>
+                            <td><small>{{ r.record_id }}</small></td>
+                            <td>{{ r.completed_at }}</td>
+                            <td><strong>{{ r.train_id }}</strong></td>
+                            <td>{{ "{:,}".format(r.pm_milestone) }} km</td>
+                            <td>{{ "{:,}".format(r.mileage_at_completion) }} km</td>
+                            <td>{{ r.completed_by }}</td>
+                            <td>{{ r.remarks or '-' }}</td>
+                            <td>
+                                <span class="status-badge green">{{ r.status|capitalize }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty-state">No maintenance records found{% if train_id %} for {{ train_id }}{% endif %}.</p>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}

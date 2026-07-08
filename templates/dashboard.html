@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{% from "components/macros.html" import pm_badge, serviceability_badge, scan_validity_badge, confidence_indicator, milestone_chips %}
+{% block title %}LRT Fleet Status{% endblock %}
+
+{% block content %}
+<main class="page">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Singapore RailTech</p>
+            <h1>LRT Fleet Status</h1>
+            <p class="subtitle">Mileage-based preventive maintenance overview</p>
+        </div>
+        <div class="updated-box">
+            <span class="updated-label">Live Updates</span>
+            <strong id="lastRefresh">Auto refresh: 5 sec</strong>
+            <a href="{{ url_for('scan_page') }}" class="btn btn-primary btn-sm" style="margin-top:8px;display:block;text-align:center">Open Camera Scan</a>
+        </div>
+    </header>
+
+    <section class="summary-grid summary-grid-5" id="summaryGrid">
+        <article class="summary-card">
+            <span class="summary-label">Total Trains</span>
+            <strong id="kpiTotal">{{ kpis.total }}</strong>
+        </article>
+        <article class="summary-card summary-danger">
+            <span class="summary-label">Overdue</span>
+            <strong id="kpiOverdue">{{ kpis.overdue }}</strong>
+        </article>
+        <article class="summary-card summary-warn">
+            <span class="summary-label">Due Soon</span>
+            <strong id="kpiDueSoon">{{ kpis.due_soon }}</strong>
+        </article>
+        <article class="summary-card summary-ok">
+            <span class="summary-label">OK</span>
+            <strong id="kpiOk">{{ kpis.ok }}</strong>
+        </article>
+        <article class="summary-card summary-review">
+            <span class="summary-label">Needs Review</span>
+            <strong id="kpiReview">{{ kpis.review }}</strong>
+        </article>
+    </section>
+
+    <div class="info-banner">
+        <strong>PM Status Rules:</strong> Due Soon = within 5,000 km of next milestone &nbsp;|&nbsp;
+        Overdue = milestone passed without maintenance completion &nbsp;|&nbsp;
+        OK = more than 5,000 km from next PM
+    </div>
+
+    <section class="toolbar">
+        <div class="filter-group">
+            <a href="?filter=all&sort={{ sort_by }}&search={{ search }}" class="filter-btn {% if filter_status == 'all' %}active{% endif %}">All</a>
+            <a href="?filter=overdue&sort={{ sort_by }}&search={{ search }}" class="filter-btn filter-danger {% if filter_status == 'overdue' %}active{% endif %}">Overdue</a>
+            <a href="?filter=due_soon&sort={{ sort_by }}&search={{ search }}" class="filter-btn filter-warn {% if filter_status == 'due_soon' %}active{% endif %}">Due Soon</a>
+            <a href="?filter=ok&sort={{ sort_by }}&search={{ search }}" class="filter-btn filter-ok {% if filter_status == 'ok' %}active{% endif %}">OK</a>
+            <a href="?filter=review&sort={{ sort_by }}&search={{ search }}" class="filter-btn filter-review {% if filter_status == 'review' %}active{% endif %}">Needs Review</a>
+        </div>
+        <form class="search-sort-form" method="GET">
+            <input type="hidden" name="filter" value="{{ filter_status }}">
+            <input type="text" name="search" value="{{ search }}" placeholder="Search Train ID..." class="search-input">
+            <select name="sort" onchange="this.form.submit()">
+                <option value="urgency" {% if sort_by == 'urgency' %}selected{% endif %}>Sort: Urgency</option>
+                <option value="mileage" {% if sort_by == 'mileage' %}selected{% endif %}>Sort: Mileage</option>
+                <option value="last_updated" {% if sort_by == 'last_updated' %}selected{% endif %}>Sort: Last Updated</option>
+            </select>
+            <button type="submit" class="btn btn-secondary btn-sm">Search</button>
+        </form>
+    </section>
+
+    <section class="live-panel">
+        <div class="panel-card">
+            <div class="panel-head">
+                <h2>Live Scan Status</h2>
+                <span class="live-dot"></span>
+            </div>
+            {% if latest_scan %}
+            <div class="live-grid" id="liveScanGrid">
+                <div><span class="meta-label">Last Scan Train</span><strong id="liveTrain">{{ latest_scan.train_id }}</strong></div>
+                <div><span class="meta-label">Scanned Mileage</span><strong id="liveMileage">{{ "{:,}".format(latest_scan.scanned_mileage) }} km</strong></div>
+                <div><span class="meta-label">Result</span><strong id="liveResult">{{ latest_scan.result }}</strong></div>
+                <div><span class="meta-label">Time</span><strong id="liveTime">{{ latest_scan.timestamp }}</strong></div>
+            </div>
+            <p class="live-reason" id="liveReason">{{ latest_scan.reason }}</p>
+            {% else %}
+            <div id="liveScanGrid"><p>No scan data yet.</p></div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="card-grid" id="trainGrid">
+        {% for train in trains %}
+        <article class="train-card" data-train-id="{{ train.train_id }}" data-status="{{ train.pm_status }}">
+            <div class="card-top">
+                <div>
+                    <p class="train-label">Train ID</p>
+                    <h2>{{ train.train_id }}</h2>
+                    <small class="train-model">{{ train.model }}</small>
+                </div>
+                {{ pm_badge(train.pm_status, train.color) }}
+            </div>
+
+            <p class="action-message status-{{ train.color }}">{{ train.status_message }}</p>
+
+            <div class="mileage-row">
+                <div class="mileage-block">
+                    <span class="meta-label">Current Mileage</span>
+                    <strong class="mileage-value">{{ "{:,}".format(train.current_mileage) }} km</strong>
+                </div>
+                <div class="mileage-block">
+                    <span class="meta-label">Next PM Milestone</span>
+                    <strong>{{ "{:,}".format(train.next_pm_milestone) }} km</strong>
+                </div>
+            </div>
+
+            <div class="next-action">
+                <span class="meta-label">Next Action</span>
+                <strong>{{ train.next_action }}</strong>
+            </div>
+
+            <div class="meta-row">
+                <span class="meta-label">Last Updated</span>
+                <strong>{{ train.last_updated }}</strong>
+            </div>
+
+            <div class="badge-row">
+                {{ serviceability_badge(train.serviceability_status) }}
+                {{ scan_validity_badge(train.scan_validity) }}
+                {{ confidence_indicator("OCR", train.ocr_confidence) }}
+                {{ confidence_indicator("QR", train.qr_confidence) }}
+            </div>
+
+            <div class="milestone-block">
+                <p class="milestone-title">PM Milestone Timeline</p>
+                {{ milestone_chips(train.checklist) }}
+            </div>
+
+            {% if can_edit %}
+            <div class="card-actions">
+                <button class="btn btn-secondary btn-sm" onclick="openEditModal('{{ train.train_id }}')">Edit Record</button>
+                <button class="btn btn-primary btn-sm" onclick="openMaintenanceModal('{{ train.train_id }}')">Maintenance Completed</button>
+                {% if train.needs_manual_review %}
+                <button class="btn btn-warn btn-sm" onclick="confirmReview('{{ train.train_id }}')">Confirm Review</button>
+                {% else %}
+                <button class="btn btn-outline btn-sm" onclick="flagReview('{{ train.train_id }}')">Manual Review</button>
+                {% endif %}
+                <button class="btn btn-outline btn-sm" onclick="viewHistory('{{ train.train_id }}')">View History</button>
+            </div>
+            {% endif %}
+        </article>
+        {% else %}
+        <p class="empty-state">No trains match the current filter.</p>
+        {% endfor %}
+    </section>
+
+    <section class="history-section">
+        <div class="panel-card">
+            <div class="panel-head">
+                <h2>Recent Scan History</h2>
+            </div>
+            {% if history %}
+            <div class="history-table-wrap">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Train</th>
+                            <th>Scanned</th>
+                            <th>Previous</th>
+                            <th>Result</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in history %}
+                        <tr>
+                            <td>{{ item.timestamp }}</td>
+                            <td>{{ item.train_id }}</td>
+                            <td>{{ "{:,}".format(item.scanned_mileage) }}</td>
+                            <td>{{ "{:,}".format(item.previous_mileage) if item.previous_mileage is not none else '-' }}</td>
+                            <td>{{ item.result }}</td>
+                            <td>{{ item.reason }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>No history yet.</p>
+            {% endif %}
+        </div>
+    </section>
+</main>
+
+{% if can_edit %}
+<div class="modal-overlay" id="editModal" hidden>
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Edit Train Record</h2>
+            <button class="modal-close" onclick="closeModal('editModal')">&times;</button>
+        </div>
+        <form id="editForm" onsubmit="submitEdit(event)">
+            <input type="hidden" id="editTrainId" name="train_id">
+            <div class="form-group">
+                <label for="editMileage">Current Mileage (km)</label>
+                <input type="number" id="editMileage" name="mileage" required min="0">
+            </div>
+            <div class="form-group">
+                <label for="editServiceability">Serviceability Status</label>
+                <select id="editServiceability" name="serviceability">
+                    <option value="Serviceable">Serviceable</option>
+                    <option value="Under Maintenance">Under Maintenance</option>
+                    <option value="Unserviceable">Unserviceable</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="editReason">Reason for Edit <span class="required">*</span></label>
+                <textarea id="editReason" name="reason" required rows="3" placeholder="Explain why this manual edit is needed"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeModal('editModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="maintenanceModal" hidden>
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Mark Maintenance Completed</h2>
+            <button class="modal-close" onclick="closeModal('maintenanceModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="maintenanceConfirmText">Confirm that the current PM milestone maintenance has been completed for this train.</p>
+            <form id="maintenanceForm" onsubmit="submitMaintenance(event)">
+                <input type="hidden" id="maintTrainId" name="train_id">
+                <div class="form-group">
+                    <label for="maintRemarks">Remarks (optional)</label>
+                    <textarea id="maintRemarks" name="remarks" rows="3" placeholder="e.g. Brake inspection completed, all checks passed"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('maintenanceModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm Completion</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="confirmModal" hidden>
+    <div class="modal modal-sm">
+        <div class="modal-header">
+            <h2 id="confirmTitle">Confirm Action</h2>
+            <button class="modal-close" onclick="closeModal('confirmModal')">&times;</button>
+        </div>
+        <p id="confirmMessage"></p>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-outline" onclick="closeModal('confirmModal')">Cancel</button>
+            <button type="button" class="btn btn-primary" id="confirmBtn">Confirm</button>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

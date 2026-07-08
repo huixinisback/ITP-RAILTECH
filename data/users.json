@@ -1,0 +1,38 @@
+[
+  {
+    "user_id": "admin",
+    "full_name": "System Administrator",
+    "email": "admin@railtech.sg",
+    "password_hash": "scrypt:32768:8:1$aQxyoeWrAnGWPUwK$b259b909dfce8841b3ce1b339473cc46b7691995eca36232b4a43f4da9eb44717ebdc054702042b0fa22d99a18b445148877cc4b92b103e11d019abb46507abc",
+    "role": "admin",
+    "status": "active",
+    "phone": "+65 9123 4567",
+    "remember_preference": false,
+    "last_login": "2026-07-08 15:09:14",
+    "created_at": "2026-01-01 00:00:00"
+  },
+  {
+    "user_id": "maint01",
+    "full_name": "Raj Kumar",
+    "email": "raj.kumar@railtech.sg",
+    "password_hash": "scrypt:32768:8:1$v1AF6cqWvu8x6vKR$6a01e14f41827fb5956aac68602b534bb483fdf581f61f7b1e814b50c878f3b0ec2e05a4edfffe91dd5ad7432b06a7360ee0fc51ef41eca85c7519ad8e31db96",
+    "role": "maintenance",
+    "status": "active",
+    "phone": "+65 9234 5678",
+    "remember_preference": false,
+    "last_login": null,
+    "created_at": "2026-01-15 08:00:00"
+  },
+  {
+    "user_id": "ops01",
+    "full_name": "Sarah Tan",
+    "email": "sarah.tan@railtech.sg",
+    "password_hash": "scrypt:32768:8:1$V0SrCGoEjTmDazW4$abde161f80c5a7e6501c82b610df30aafa3f3741745616db2bda4a63b52a20fabd8a7620961c5939be50c55a980a28f871f6603b85e0c3f64e1f51eb017e9409",
+    "role": "operator",
+    "status": "active",
+    "phone": "",
+    "remember_preference": false,
+    "last_login": null,
+    "created_at": "2026-02-01 10:00:00"
+  }
+]

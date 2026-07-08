@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% from "components/macros.html" import pm_badge, confidence_indicator, scan_validity_badge %}
+{% block title %}Review Queue — Admin{% endblock %}
+
+{% block content %}
+<main class="page">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Administration</p>
+            <h1>Manual Review Queue</h1>
+            <p class="subtitle">Trains flagged for manual verification due to low OCR/QR confidence</p>
+        </div>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline">← Back to Admin</a>
+    </header>
+
+    <section class="card-grid">
+        {% for train in queue %}
+        <article class="train-card review-card">
+            <div class="card-top">
+                <div>
+                    <p class="train-label">Train ID</p>
+                    <h2>{{ train.train_id }}</h2>
+                </div>
+                {{ scan_validity_badge(train.scan_validity) }}
+            </div>
+
+            <p class="action-message status-yellow">{{ train.status_message }}</p>
+
+            <div class="mileage-row">
+                <div class="mileage-block">
+                    <span class="meta-label">Current Mileage</span>
+                    <strong>{{ "{:,}".format(train.current_mileage) }} km</strong>
+                </div>
+                <div class="mileage-block">
+                    <span class="meta-label">Next PM</span>
+                    <strong>{{ "{:,}".format(train.next_pm_milestone) }} km</strong>
+                </div>
+            </div>
+
+            <div class="badge-row">
+                {{ confidence_indicator("OCR", train.ocr_confidence) }}
+                {{ confidence_indicator("QR", train.qr_confidence) }}
+                {{ pm_badge(train.pm_status, train.color) }}
+            </div>
+
+            {% if train.remarks %}
+            <p class="review-remarks"><strong>Remarks:</strong> {{ train.remarks }}</p>
+            {% endif %}
+
+            <div class="card-actions">
+                <button class="btn btn-primary btn-sm" onclick="confirmReview('{{ train.train_id }}')">Confirm & Clear Review</button>
+                <button class="btn btn-secondary btn-sm" onclick="openEditModal('{{ train.train_id }}')">Edit Record</button>
+            </div>
+        </article>
+        {% else %}
+        <p class="empty-state">No trains awaiting manual review. All scans are validated.</p>
+        {% endfor %}
+    </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function confirmReview(trainId) {
+    fetch('/api/manual-edit', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({train_id: trainId, field: 'needs_manual_review', new_value: false, reason: 'Manual review confirmed'})
+    }).then(r => r.json()).then(d => { if(d.success) location.reload(); else alert(d.message); });
+}
+</script>
+{% endblock %}
