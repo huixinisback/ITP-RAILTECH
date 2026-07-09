@@ -1,5 +1,137 @@
 [
   {
+    "log_id": "LOG-7BBDBA4B",
+    "timestamp": "2026-07-09 18:32:48",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "Maintenance Completed",
+    "affected_id": "PV102",
+    "old_value": "[2000, 13000, 40000, 120000, 360000, 720000]",
+    "new_value": "[2000, 13000, 40000, 120000, 360000, 720000, 1080000]",
+    "remarks": "complete"
+  },
+  {
+    "log_id": "LOG-5BDB6916",
+    "timestamp": "2026-07-09 18:32:24",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "Maintenance Completed",
+    "affected_id": "PV102",
+    "old_value": "[2000, 13000, 40000, 120000, 360000]",
+    "new_value": "[2000, 13000, 40000, 120000, 360000, 720000]",
+    "remarks": ""
+  },
+  {
+    "log_id": "LOG-9509A124",
+    "timestamp": "2026-07-09 18:32:22",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "Maintenance Completed",
+    "affected_id": "PV102",
+    "old_value": "[2000, 13000, 40000, 120000]",
+    "new_value": "[2000, 13000, 40000, 120000, 360000]",
+    "remarks": ""
+  },
+  {
+    "log_id": "LOG-724AAC55",
+    "timestamp": "2026-07-09 18:28:26",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "Manual Serviceability Change",
+    "affected_id": "PV105",
+    "old_value": "Serviceable",
+    "new_value": "Serviceable",
+    "remarks": "1"
+  },
+  {
+    "log_id": "LOG-EB7D459A",
+    "timestamp": "2026-07-09 18:28:26",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "Manual Mileage Edit",
+    "affected_id": "PV105",
+    "old_value": "1950",
+    "new_value": "2500",
+    "remarks": "1"
+  },
+  {
+    "log_id": "LOG-112E9D60",
+    "timestamp": "2026-07-09 18:27:57",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "Manual Serviceability Change",
+    "affected_id": "PV101",
+    "old_value": "Serviceable",
+    "new_value": "Unserviceable",
+    "remarks": "1"
+  },
+  {
+    "log_id": "LOG-6C7BB1C7",
+    "timestamp": "2026-07-09 18:27:57",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "Manual Mileage Edit",
+    "affected_id": "PV101",
+    "old_value": "56123",
+    "new_value": "56123",
+    "remarks": "1"
+  },
+  {
+    "log_id": "LOG-FA520B60",
+    "timestamp": "2026-07-09 18:27:40",
+    "user_id": "scanner",
+    "user_role": "system",
+    "action_type": "OCR Correction",
+    "affected_id": "PV101",
+    "old_value": "39600",
+    "new_value": "56123",
+    "remarks": null
+  },
+  {
+    "log_id": "LOG-8A20C6F8",
+    "timestamp": "2026-07-09 18:04:02",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "User Login",
+    "affected_id": null,
+    "old_value": null,
+    "new_value": null,
+    "remarks": null
+  },
+  {
+    "log_id": "LOG-7BECBF6C",
+    "timestamp": "2026-07-09 18:02:47",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "User Logout",
+    "affected_id": null,
+    "old_value": null,
+    "new_value": null,
+    "remarks": null
+  },
+  {
+    "log_id": "LOG-32F32050",
+    "timestamp": "2026-07-09 16:44:42",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "User Login",
+    "affected_id": null,
+    "old_value": null,
+    "new_value": null,
+    "remarks": null
+  },
+  {
+    "log_id": "LOG-3C1AA62D",
+    "timestamp": "2026-07-09 16:43:40",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "User Logout",
+    "affected_id": null,
+    "old_value": null,
+    "new_value": null,
+    "remarks": null
+  },
+  {
     "log_id": "LOG-2672CA78",
     "timestamp": "2026-07-08 16:36:26",
     "user_id": "scanner",

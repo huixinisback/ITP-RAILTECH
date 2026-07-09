@@ -15,6 +15,25 @@ def get_next_pm_by_mileage(current_mileage):
     return 360000 * (cycles_beyond + 1)
 
 
+def get_due_pm_milestones(completed_milestones, current_mileage):
+    """Return uncompleted milestones at or below current mileage (overdue queue)."""
+    return [cycle for cycle in PM_CYCLES if cycle not in completed_milestones and current_mileage >= cycle]
+
+
+def resolve_maintenance_completion(completed_milestones, current_mileage):
+    """Mark the active PM complete and catch up any earlier milestones already passed."""
+    completed = list(completed_milestones)
+    target = get_next_pm_milestone(completed, current_mileage)
+    milestones_to_complete = {target}
+    milestones_to_complete.update(get_due_pm_milestones(completed, current_mileage))
+
+    for milestone in sorted(milestones_to_complete):
+        if milestone not in completed:
+            completed.append(milestone)
+
+    return sorted(completed), target
+
+
 def get_next_pm_milestone(completed_milestones, current_mileage):
     """Return the next uncompleted PM milestone for maintenance workflows."""
     for cycle in PM_CYCLES:
@@ -59,11 +78,13 @@ def get_next_action(status, next_pm, needs_review, scan_validity):
 
 
 def build_milestone_timeline(completed_milestones, current_mileage, next_pm):
-    """Build milestone chips with completed/current/future states based on mileage."""
+    """Build milestone chips reflecting maintenance completion, not mileage alone."""
     timeline = []
     for cycle in PM_CYCLES:
-        if current_mileage >= cycle:
+        if cycle in completed_milestones:
             state = "completed"
+        elif current_mileage >= cycle:
+            state = "overdue"
         elif cycle == next_pm:
             state = "current"
         else:
@@ -72,7 +93,7 @@ def build_milestone_timeline(completed_milestones, current_mileage, next_pm):
             "value": cycle,
             "label": _format_milestone_label(cycle),
             "state": state,
-            "done": current_mileage >= cycle,
+            "done": cycle in completed_milestones,
         })
     return timeline
 
@@ -86,10 +107,8 @@ def _format_milestone_label(value):
 def enrich_train(train):
     """Enrich a raw train record with computed PM fields."""
     current_mileage = train.get("current_mileage", train.get("total_distance", 0))
-    completed = sync_milestones_for_mileage(
-        train.get("completed_milestones", []), current_mileage,
-    )
-    next_pm = get_next_pm_by_mileage(current_mileage)
+    completed = sorted(train.get("completed_milestones", []))
+    next_pm = get_next_pm_milestone(completed, current_mileage)
     status, color, distance = calculate_pm_status(current_mileage, next_pm)
     needs_review = train.get("needs_manual_review", False)
     scan_validity = train.get("scan_validity", "Valid")
@@ -133,14 +152,14 @@ def enrich_trains(trains, sort_by="urgency"):
     return enriched
 
 
-def complete_maintenance(train, milestone, completed_by, remarks=""):
-    """Mark a PM milestone as completed and advance to next."""
-    completed = list(train.get("completed_milestones", []))
-    if milestone not in completed:
-        completed.append(milestone)
-        completed.sort()
+def complete_maintenance(train, completed_by, remarks=""):
+    """Mark PM milestone(s) complete and advance to the next target."""
+    mileage = train.get("current_mileage", train.get("total_distance", 0))
+    completed, target = resolve_maintenance_completion(
+        train.get("completed_milestones", []), mileage,
+    )
     train["completed_milestones"] = completed
-    train["last_pm_completed"] = milestone
+    train["last_pm_completed"] = target
     if remarks:
         train["remarks"] = remarks
     return train

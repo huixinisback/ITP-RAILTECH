@@ -40,10 +40,14 @@ async function openMaintenanceModal(trainId) {
     const train = await fetchTrain(trainId);
     document.getElementById('maintTrainId').value = trainId;
     document.getElementById('maintRemarks').value = '';
+    const nextPm = train.next_pm_milestone.toLocaleString();
+    const mileage = train.current_mileage.toLocaleString();
+    const statusNote = train.pm_status === 'Overdue' || train.pm_status === 'Due Soon'
+        ? ' Status will reset to OK and advance to the next PM milestone.'
+        : ' Next PM will advance to the following milestone.';
     document.getElementById('maintenanceConfirmText').textContent =
-        `Mark the ${train.next_pm_milestone.toLocaleString()} km PM milestone as completed for ${trainId}? ` +
-        `Current mileage: ${train.current_mileage.toLocaleString()} km. ` +
-        `Next PM will advance to the following milestone.`;
+        `Mark the ${nextPm} km PM milestone as completed for ${trainId}? ` +
+        `Current mileage: ${mileage} km.${statusNote}`;
     openModal('maintenanceModal');
 }
 

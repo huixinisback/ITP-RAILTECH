@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-07-09 18:27:40",
+    "train_id": "PV101",
+    "scanned_mileage": 56123,
+    "previous_mileage": 39600,
+    "ocr_confidence": 0.9099999999999999,
+    "qr_confidence": 0.98,
+    "result": "Accepted",
+    "reason": "Mileage updated successfully"
+  },
+  {
+    "timestamp": "2026-07-09 18:27:18",
+    "train_id": "PV101",
+    "scanned_mileage": 5617,
+    "previous_mileage": 39600,
+    "ocr_confidence": 0.8799999999999999,
+    "qr_confidence": 0.98,
+    "result": "Rejected",
+    "reason": "Mileage not higher than previous value"
+  },
+  {
     "timestamp": "2026-07-08 16:50:39",
     "train_id": "LV02",
     "scanned_mileage": 77,

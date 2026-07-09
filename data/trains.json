@@ -2,21 +2,21 @@
   {
     "train_id": "PV101",
     "model": "2-Car LRV",
-    "current_mileage": 39600,
-    "total_distance": 39600,
+    "current_mileage": 56123,
+    "total_distance": 56123,
     "completed_milestones": [
       2000,
       13000,
       40000
     ],
-    "serviceability_status": "Serviceable",
-    "ocr_confidence": 0.92,
+    "serviceability_status": "Unserviceable",
+    "ocr_confidence": 0.9099999999999999,
     "qr_confidence": 0.98,
     "scan_validity": "Valid",
     "needs_manual_review": false,
-    "last_updated": "2026-07-08 14:53:48",
+    "last_updated": "2026-07-09 18:27:57",
     "last_pm_completed": 40000,
-    "remarks": ""
+    "remarks": "1"
   },
   {
     "train_id": "PV102",
@@ -27,16 +27,19 @@
       2000,
       13000,
       40000,
-      120000
+      120000,
+      360000,
+      720000,
+      1080000
     ],
     "serviceability_status": "Serviceable",
     "ocr_confidence": 0.88,
     "qr_confidence": 0.92,
     "scan_validity": "Valid",
     "needs_manual_review": false,
-    "last_updated": "2026-07-08 11:30:00",
-    "last_pm_completed": 120000,
-    "remarks": ""
+    "last_updated": "2026-07-09 18:32:48",
+    "last_pm_completed": 1080000,
+    "remarks": "complete"
   },
   {
     "train_id": "PV103",
@@ -79,17 +82,17 @@
   {
     "train_id": "PV105",
     "model": "2-Car LRV",
-    "current_mileage": 1950,
-    "total_distance": 1950,
+    "current_mileage": 2500,
+    "total_distance": 2500,
     "completed_milestones": [],
     "serviceability_status": "Serviceable",
     "ocr_confidence": 0.91,
     "qr_confidence": 0.95,
     "scan_validity": "Valid",
     "needs_manual_review": false,
-    "last_updated": "2026-07-08 08:00:00",
+    "last_updated": "2026-07-09 18:28:26",
     "last_pm_completed": null,
-    "remarks": ""
+    "remarks": "1"
   },
   {
     "train_id": "PV106",

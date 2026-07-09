@@ -4,7 +4,7 @@ from config import (
 )
 from services.data_store import load_json, save_json, now_str, new_id
 from services.pm_engine import (
-    enrich_train, complete_maintenance, get_next_pm_milestone, sync_milestones_for_mileage,
+    enrich_train, complete_maintenance, sync_milestones_for_mileage,
 )
 from services.audit_service import log_audit
 
@@ -178,11 +178,9 @@ def mark_maintenance_completed(train_id, remarks, user_id, user_role):
             continue
 
         mileage = train.get("current_mileage", train.get("total_distance", 0))
-        completed = train.get("completed_milestones", [])
-        milestone = get_next_pm_milestone(completed, mileage)
-
-        old_completed = list(completed)
-        train = complete_maintenance(train, milestone, user_id, remarks)
+        old_completed = list(train.get("completed_milestones", []))
+        train = complete_maintenance(train, user_id, remarks)
+        milestone = train["last_pm_completed"]
         train["last_updated"] = now_str()
         save_trains(trains)
 

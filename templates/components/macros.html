@@ -28,7 +28,7 @@
 <div class="milestone-row">
     {% for item in checklist %}
     <span class="milestone-chip {{ item.state }}">
-        {% if item.state == 'completed' %}✓{% elif item.state == 'current' %}●{% else %}○{% endif %}
+        {% if item.state == 'completed' %}✓{% elif item.state == 'overdue' %}!{% elif item.state == 'current' %}●{% else %}○{% endif %}
         {{ item.label }}
     </span>
     {% endfor %}

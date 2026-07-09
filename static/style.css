@@ -238,6 +238,13 @@ h1 {
     color: #2f6b22;
 }
 
+.milestone-chip.overdue {
+    background: #fde8e8;
+    color: #b42318;
+    border: 2px solid #b42318;
+    font-weight: 700;
+}
+
 .milestone-chip.current {
     background: #f7edd2;
     color: #b67a00;
