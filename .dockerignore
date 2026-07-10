@@ -1,0 +1,12 @@
+.git
+.gitignore
+.venv
+venv
+__pycache__/
+*.pyc
+*.db
+data/
+*.log
+.agents/
+firebase.json
+.firebaserc
