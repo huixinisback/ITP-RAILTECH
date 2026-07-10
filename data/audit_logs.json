@@ -1,5 +1,27 @@
 [
   {
+    "log_id": "LOG-DE359C4E",
+    "timestamp": "2026-07-10 12:31:33",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "User Login",
+    "affected_id": null,
+    "old_value": null,
+    "new_value": null,
+    "remarks": null
+  },
+  {
+    "log_id": "LOG-621F7579",
+    "timestamp": "2026-07-10 11:58:25",
+    "user_id": "admin",
+    "user_role": "admin",
+    "action_type": "User Login",
+    "affected_id": null,
+    "old_value": null,
+    "new_value": null,
+    "remarks": null
+  },
+  {
     "log_id": "LOG-7BBDBA4B",
     "timestamp": "2026-07-09 18:32:48",
     "user_id": "admin",

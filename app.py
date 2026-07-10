@@ -1,7 +1,9 @@
+import os
 from flask import (
     Flask, render_template, request, jsonify, session,
     redirect, url_for, flash,
 )
+from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import generate_password_hash
 from config import SECRET_KEY, EDIT_ROLES, ADMIN_ROLES
 from services.pm_engine import enrich_trains, enrich_train
@@ -23,19 +25,48 @@ from utils.auth import login_required, admin_required, edit_required, api_edit_r
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1, x_prefix=1)
+app.config["PREFERRED_URL_SCHEME"] = (
+    "https" if os.environ.get("GAE_ENV") or os.environ.get("K_SERVICE") or os.environ.get("PORT") else "http"
+)
+app.config["SESSION_COOKIE_SECURE"] = os.environ.get("SESSION_COOKIE_SECURE", "false").lower() == "true"
 
 
 def init_default_users():
-    """Set default passwords for demo users on first run."""
+    """Ensure demo users exist and have usable passwords in local and Cloud environments."""
     from services.auth_service import get_users, save_users
-    users = get_users()
-    defaults = {"admin": "Admin123!", "maint01": "Maint123!", "ops01": "Ops12345!"}
+
+    users = get_users() or []
+    defaults = {
+        "admin": os.environ.get("DEFAULT_ADMIN_PASSWORD", "Admin123!"),
+        "maint01": os.environ.get("DEFAULT_MAINT_PASSWORD", "Maint123!"),
+        "ops01": os.environ.get("DEFAULT_OPS_PASSWORD", "Ops12345!"),
+    }
+    existing_users = {u.get("user_id"): u for u in users if isinstance(u, dict) and u.get("user_id")}
     changed = False
-    for u in users:
-        if "placeholder" in u.get("password_hash", ""):
-            pwd = defaults.get(u["user_id"], "Password1")
-            u["password_hash"] = generate_password_hash(pwd)
+
+    for user_id, password in defaults.items():
+        user = existing_users.get(user_id)
+        if user is None:
+            users.append({
+                "user_id": user_id,
+                "full_name": "System Administrator" if user_id == "admin" else "Demo User",
+                "email": f"{user_id}@railtech.sg",
+                "password_hash": generate_password_hash(password),
+                "role": "admin" if user_id == "admin" else "maintenance" if user_id == "maint01" else "operator",
+                "status": "active",
+                "phone": "",
+                "remember_preference": False,
+                "last_login": None,
+                "created_at": now_str(),
+            })
             changed = True
+            continue
+
+        if "placeholder" in str(user.get("password_hash", "")) or not user.get("password_hash"):
+            user["password_hash"] = generate_password_hash(password)
+            changed = True
+
     if changed:
         save_users(users)
 
