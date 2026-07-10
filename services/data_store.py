@@ -39,6 +39,15 @@ def load_json(file_path, default=None):
         blob = bucket.blob(blob_name)
         try:
             if not blob.exists():
+                # Auto-seed GCS with local seed files if they exist in the container
+                if os.path.exists(file_path):
+                    try:
+                        with open(file_path, "r", encoding="utf-8") as f:
+                            local_data = json.load(f)
+                        blob.upload_from_string(json.dumps(local_data, indent=2), content_type="application/json", encoding="utf-8")
+                        return local_data
+                    except Exception as seed_err:
+                        print(f"Failed to auto-seed {blob_name} to GCS: {seed_err}")
                 return default if not isinstance(default, dict) else default.copy()
             content = blob.download_as_text(encoding="utf-8")
             return json.loads(content)
